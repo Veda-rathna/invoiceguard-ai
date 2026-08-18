@@ -41,58 +41,58 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl space-y-4 p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl space-y-4 p-6 text-slate-900 animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div>
-            <h3 className="text-base font-bold text-white">
-              Human Review Action: #{invoice.invoice_number || invoice.id}
+            <h3 className="text-base font-extrabold text-slate-900 font-mono">
+              Human Review: #{invoice.invoice_number || invoice.id}
             </h3>
-            <p className="text-xs text-slate-400">
-              Vendor: {invoice.vendor_name || 'Unknown'} | Amount: ₹{(invoice.total_amount || 0).toLocaleString()}
+            <p className="text-xs text-slate-500 font-medium mt-0.5">
+              Vendor: <span className="text-slate-800 font-semibold">{invoice.vendor_name || 'Unknown'}</span> | Amount: <span className="text-emerald-700 font-bold font-mono">₹{(invoice.total_amount || 0).toLocaleString()}</span>
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Reason / Exception Context */}
-        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 space-y-1">
-          <p className="font-semibold font-mono uppercase text-[11px]">
+        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
+          <p className="font-bold font-mono uppercase text-[11px] text-amber-800">
             Escalation Reason:
           </p>
-          <p>{invoice.decision_reason || 'Manual review required by risk policy.'}</p>
+          <p className="leading-relaxed font-medium">{invoice.decision_reason || 'Manual review required by risk policy.'}</p>
         </div>
 
         {/* Reviewer inputs */}
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">
+            <label className="block text-xs font-bold text-slate-700 mb-1">
               Reviewer Name / Role
             </label>
             <input
               type="text"
               value={reviewerUser}
               onChange={(e) => setReviewerUser(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-2xs font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">
+            <label className="block text-xs font-bold text-slate-700 mb-1">
               Audit Notes & Justification (Optional)
             </label>
             <textarea
               rows={3}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="e.g. Verified price difference with vendor over email, approved variance..."
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+              placeholder="e.g. Verified price difference with vendor over email, approved one-time variance..."
+              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-2xs font-medium"
             />
           </div>
         </div>
@@ -102,7 +102,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           <button
             onClick={() => handleAction('APPROVE')}
             disabled={isSubmitting}
-            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs transition-all disabled:opacity-50"
+            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
             <span>Approve</span>
@@ -111,7 +111,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           <button
             onClick={() => handleAction('REQUEST_INFO')}
             disabled={isSubmitting}
-            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 font-bold text-xs transition-all disabled:opacity-50"
+            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs shadow-2xs transition-all disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <HelpCircle className="w-4 h-4" />}
             <span>Request Info</span>
@@ -120,7 +120,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           <button
             onClick={() => handleAction('REJECT')}
             disabled={isSubmitting}
-            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 font-bold text-xs transition-all disabled:opacity-50"
+            className="flex items-center justify-center space-x-1.5 py-2.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs shadow-2xs transition-all disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <XCircle className="w-4 h-4" />}
             <span>Reject</span>

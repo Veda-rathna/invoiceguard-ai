@@ -10,35 +10,38 @@ export const Badge: React.FC<BadgeProps> = ({ variant = 'default', value, classN
   const getColors = () => {
     const val = (value || '').toUpperCase();
 
-    // Decisions
+    // Decisions & Positive Statuses
     if (val === 'AUTO_APPROVE' || val === 'APPROVED' || val === 'PASS' || val === 'EXACT_MATCH') {
-      return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+      return 'bg-emerald-50 text-emerald-800 border-emerald-200';
     }
+    // Review & Warning Statuses
     if (val === 'HUMAN_REVIEW' || val === 'IN_REVIEW' || val === 'PARTIAL_MATCH' || val === 'WARNING') {
-      return 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+      return 'bg-amber-50 text-amber-800 border-amber-200';
     }
+    // Block & Critical Statuses
     if (val === 'BLOCK' || val === 'REJECTED' || val === 'FAIL' || val === 'MISMATCH' || val === 'SUSPECTED_DUPLICATE') {
-      return 'bg-rose-500/15 text-rose-400 border-rose-500/30';
+      return 'bg-rose-50 text-rose-800 border-rose-200';
     }
-    if (val === 'REQUEST_INFO' || val === 'INFO') {
-      return 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+    // Info Statuses
+    if (val === 'REQUEST_INFO' || val === 'INFO' || val === 'PO_NOT_REQUIRED') {
+      return 'bg-blue-50 text-blue-800 border-blue-200';
     }
 
     // Risk Levels
     if (val === 'LOW') {
-      return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+      return 'bg-emerald-50 text-emerald-800 border-emerald-200';
     }
     if (val === 'MEDIUM') {
-      return 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+      return 'bg-blue-50 text-blue-800 border-blue-200';
     }
     if (val === 'HIGH') {
-      return 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+      return 'bg-amber-50 text-amber-800 border-amber-200';
     }
     if (val === 'CRITICAL') {
-      return 'bg-rose-500/15 text-rose-400 border-rose-500/30';
+      return 'bg-rose-50 text-rose-800 border-rose-200';
     }
 
-    return 'bg-slate-800 text-slate-300 border-slate-700';
+    return 'bg-slate-100 text-slate-700 border-slate-200';
   };
 
   const formatText = (text: string) => {

@@ -5,15 +5,11 @@ import {
   FileText,
   CheckCircle2,
   AlertTriangle,
-  ShieldAlert,
   GitCompare,
   Sliders,
-  AlertOctagon,
   Sparkles,
   UserCheck,
   Download,
-  Info,
-  Clock,
   Layers
 } from 'lucide-react';
 
@@ -52,8 +48,8 @@ export const InvoiceDetail: React.FC = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
-          <p className="text-xs font-mono text-slate-400">Loading invoice and multi-agent audit state...</p>
+          <div className="w-10 h-10 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
+          <p className="text-xs font-mono text-slate-500 font-medium">Loading invoice and multi-agent audit state...</p>
         </div>
       </div>
     );
@@ -67,24 +63,24 @@ export const InvoiceDetail: React.FC = () => {
   return (
     <div className="space-y-6 pb-16">
       {/* Top Breadcrumb & Action Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div className="flex items-center space-x-3">
           <Link
             to="/invoices"
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+            className="p-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 shadow-2xs transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div>
             <div className="flex items-center space-x-3">
-              <h1 className="text-xl font-extrabold text-white font-mono">
+              <h1 className="text-xl font-extrabold text-slate-900 font-mono">
                 #{invoice.invoice_number || invoice.id}
               </h1>
               <Badge variant="decision" value={invoice.decision} />
               <Badge variant="risk" value={invoice.risk_level} />
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Vendor: <span className="text-slate-200 font-medium">{invoice.vendor_name || 'Unknown'}</span> | Total: <span className="text-emerald-400 font-bold font-mono">₹{(invoice.total_amount || 0).toLocaleString()}</span> | Processed in {invoice.processing_latency_ms?.toFixed(0) || 380}ms
+            <p className="text-xs text-slate-500 mt-0.5 font-medium">
+              Vendor: <span className="text-slate-900 font-semibold">{invoice.vendor_name || 'Unknown'}</span> | Total: <span className="text-emerald-700 font-extrabold font-mono">₹{(invoice.total_amount || 0).toLocaleString()}</span> | Latency: {invoice.processing_latency_ms?.toFixed(0) || 380}ms
             </p>
           </div>
         </div>
@@ -93,7 +89,7 @@ export const InvoiceDetail: React.FC = () => {
           {invoice.decision !== 'AUTO_APPROVE' && (
             <button
               onClick={() => setIsReviewModalOpen(true)}
-              className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs flex items-center space-x-1.5 shadow-lg shadow-emerald-500/20 transition-all"
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center space-x-1.5 shadow-md shadow-emerald-600/20 transition-all"
             >
               <UserCheck className="w-4 h-4" />
               <span>Review / Override</span>
@@ -103,14 +99,14 @@ export const InvoiceDetail: React.FC = () => {
       </div>
 
       {/* Decision Summary & Factual AI Explanation Banner */}
-      <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-850 border border-slate-800 space-y-3 shadow-lg">
+      <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-50/90 via-white to-teal-50/70 border border-emerald-200 space-y-3 shadow-sm">
         <div className="flex items-center space-x-2">
-          <Sparkles className="w-4 h-4 text-emerald-400" />
-          <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+          <Sparkles className="w-4 h-4 text-emerald-600" />
+          <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-800">
             Explainable AI Decision Brief (Qwen3-VL Verified)
           </h2>
         </div>
-        <p className="text-sm text-slate-200 leading-relaxed font-medium bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+        <p className="text-sm text-slate-800 leading-relaxed font-medium bg-white p-4 rounded-xl border border-emerald-100/90 shadow-2xs">
           {invoice.explanation || invoice.decision_reason || 'Autonomous multi-agent analysis complete.'}
         </p>
       </div>
@@ -120,31 +116,30 @@ export const InvoiceDetail: React.FC = () => {
         {/* Left Column: Original Document Viewer & Extracted Fields */}
         <div className="lg:col-span-5 space-y-6">
           {/* Document Preview */}
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2 text-xs font-bold text-slate-200">
-                <FileText className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center space-x-2 text-xs font-bold text-slate-900">
+                <FileText className="w-4 h-4 text-emerald-600" />
                 <span>Original Financial Document</span>
               </div>
-              <span className="text-[11px] font-mono text-slate-400">{invoice.original_filename}</span>
+              <span className="text-[11px] font-mono text-slate-500 font-medium">{invoice.original_filename}</span>
             </div>
 
-            <div className="aspect-[3/4] w-full rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center relative group">
+            <div className="aspect-[3/4] w-full rounded-xl bg-slate-50 border border-slate-200 overflow-hidden flex items-center justify-center relative group">
               <img
                 src={`/api/v1/invoices/${invoice.id}/file`}
                 alt="Document Preview"
                 className="w-full h-full object-contain"
                 onError={(e) => {
-                  // Fallback if image not directly previewable
                   (e.target as HTMLElement).style.display = 'none';
                 }}
               />
-              <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+              <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity backdrop-blur-2xs">
                 <a
                   href={`/api/v1/invoices/${invoice.id}/file`}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3.5 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs flex items-center space-x-1.5"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center space-x-1.5 shadow-md"
                 >
                   <Download className="w-4 h-4" />
                   <span>Open Full Document</span>
@@ -154,68 +149,68 @@ export const InvoiceDetail: React.FC = () => {
           </div>
 
           {/* Extracted Structured Fields with Confidence Badges */}
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
                 Extracted Fields & Confidences
               </h3>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-xs font-mono text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 font-bold">
                 Overall: {((invoice.extraction_confidence || 0.95) * 100).toFixed(0)}%
               </span>
             </div>
 
-            <div className="space-y-2.5 text-xs">
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-850">
-                <span className="text-slate-400">Vendor Name:</span>
+            <div className="space-y-2 text-xs">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                <span className="text-slate-600 font-medium">Vendor Name:</span>
                 <div className="flex items-center space-x-2">
-                  <span className="font-semibold text-slate-200">{extracted.vendor_name || 'N/A'}</span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded">
+                  <span className="font-bold text-slate-900">{extracted.vendor_name || 'N/A'}</span>
+                  <span className="text-[10px] font-mono text-emerald-800 bg-emerald-100/70 px-1.5 py-0.5 rounded font-bold">
                     {((fieldConf.vendor_name || 0.98) * 100).toFixed(0)}%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-850">
-                <span className="text-slate-400">Invoice Number:</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                <span className="text-slate-600 font-medium">Invoice Number:</span>
                 <div className="flex items-center space-x-2">
-                  <span className="font-mono font-bold text-slate-200">{extracted.invoice_number || 'N/A'}</span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded">
+                  <span className="font-mono font-bold text-slate-900">{extracted.invoice_number || 'N/A'}</span>
+                  <span className="text-[10px] font-mono text-emerald-800 bg-emerald-100/70 px-1.5 py-0.5 rounded font-bold">
                     {((fieldConf.invoice_number || 0.99) * 100).toFixed(0)}%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-850">
-                <span className="text-slate-400">PO Number:</span>
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                <span className="text-slate-600 font-medium">PO Number:</span>
                 <div className="flex items-center space-x-2">
-                  <span className="font-mono text-slate-200">{extracted.po_number || 'None'}</span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.2 rounded">
+                  <span className="font-mono font-bold text-slate-900">{extracted.po_number || 'None'}</span>
+                  <span className="text-[10px] font-mono text-emerald-800 bg-emerald-100/70 px-1.5 py-0.5 rounded font-bold">
                     {((fieldConf.po_number || 0.95) * 100).toFixed(0)}%
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-850">
-                <span className="text-slate-400">Subtotal:</span>
-                <span className="font-mono font-semibold text-slate-200">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                <span className="text-slate-600 font-medium">Subtotal:</span>
+                <span className="font-mono font-bold text-slate-900">
                   ₹{(extracted.subtotal || 0).toLocaleString()}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-850">
-                <span className="text-slate-400">Tax / GST:</span>
-                <span className="font-mono font-semibold text-slate-200">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                <span className="text-slate-600 font-medium">Tax / GST:</span>
+                <span className="font-mono font-bold text-slate-900">
                   ₹{(extracted.tax || 0).toLocaleString()}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                <span className="font-bold text-emerald-300">Grand Total:</span>
+              <div className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border border-emerald-200">
+                <span className="font-bold text-emerald-900">Grand Total:</span>
                 <div className="flex items-center space-x-2">
-                  <span className="font-mono font-extrabold text-sm text-emerald-400">
+                  <span className="font-mono font-extrabold text-base text-emerald-800">
                     ₹{(extracted.total || 0).toLocaleString()}
                   </span>
-                  <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">
+                  <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-200/80 px-2 py-0.5 rounded">
                     {((fieldConf.total || 0.98) * 100).toFixed(0)}%
                   </span>
                 </div>
@@ -224,27 +219,27 @@ export const InvoiceDetail: React.FC = () => {
 
             {/* Line Items Table */}
             {lineItems.length > 0 && (
-              <div className="pt-3 border-t border-slate-800 space-y-2">
-                <p className="text-[11px] font-mono font-semibold uppercase text-slate-400">
+              <div className="pt-3 border-t border-slate-200 space-y-2">
+                <p className="text-[11px] font-mono font-bold uppercase text-slate-500">
                   Extracted Line Items ({lineItems.length})
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px]">
                     <thead>
-                      <tr className="text-slate-500 font-mono border-b border-slate-800 pb-1">
-                        <th>Description</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th className="text-right">Total</th>
+                      <tr className="text-slate-500 font-mono border-b border-slate-200 pb-1 bg-slate-50">
+                        <th className="py-1 px-2">Description</th>
+                        <th className="py-1 px-2">Qty</th>
+                        <th className="py-1 px-2">Price</th>
+                        <th className="py-1 px-2 text-right">Total</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/40">
+                    <tbody className="divide-y divide-slate-100 font-medium">
                       {lineItems.map((itm: any, idx: number) => (
-                        <tr key={idx} className="text-slate-300">
-                          <td className="py-1.5 pr-2">{itm.description}</td>
-                          <td className="py-1.5 font-mono">{itm.quantity}</td>
-                          <td className="py-1.5 font-mono">₹{(itm.unit_price || 0).toLocaleString()}</td>
-                          <td className="py-1.5 font-mono font-bold text-right text-emerald-400">
+                        <tr key={idx} className="text-slate-800 hover:bg-slate-50/80">
+                          <td className="py-2 px-2">{itm.description}</td>
+                          <td className="py-2 px-2 font-mono">{itm.quantity}</td>
+                          <td className="py-2 px-2 font-mono">₹{(itm.unit_price || 0).toLocaleString()}</td>
+                          <td className="py-2 px-2 font-mono font-bold text-right text-emerald-700">
                             ₹{(itm.total || 0).toLocaleString()}
                           </td>
                         </tr>
@@ -260,11 +255,11 @@ export const InvoiceDetail: React.FC = () => {
         {/* Right Column: PO 3-Way Reconciliation, Policies, Risk Factors & Agent Timeline */}
         <div className="lg:col-span-7 space-y-6">
           {/* Purchase Order 3-Way Match Card */}
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <GitCompare className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+                <GitCompare className="w-4 h-4 text-emerald-600" />
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">
                   Purchase Order 3-Way Matching
                 </h3>
               </div>
@@ -272,41 +267,41 @@ export const InvoiceDetail: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <p className="text-slate-500 text-[10px]">PO Reference</p>
-                <p className="text-slate-200 font-bold mt-0.5">{invoice.po_number || 'None'}</p>
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <p className="text-slate-500 text-[10px] uppercase font-bold">PO Reference</p>
+                <p className="text-slate-900 font-bold mt-0.5">{invoice.po_number || 'None'}</p>
               </div>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <p className="text-slate-500 text-[10px]">Invoice Total</p>
-                <p className="text-slate-200 font-bold mt-0.5">₹{(invoice.total_amount || 0).toLocaleString()}</p>
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <p className="text-slate-500 text-[10px] uppercase font-bold">Invoice Total</p>
+                <p className="text-slate-900 font-bold mt-0.5">₹{(invoice.total_amount || 0).toLocaleString()}</p>
               </div>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <p className="text-slate-500 text-[10px]">Approved PO Amount</p>
-                <p className="text-slate-200 font-bold mt-0.5">
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <p className="text-slate-500 text-[10px] uppercase font-bold">Approved PO</p>
+                <p className="text-slate-900 font-bold mt-0.5">
                   ₹{(poDetails.po_total || invoice.total_amount || 0).toLocaleString()}
                 </p>
               </div>
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                <p className="text-slate-500 text-[10px]">PO Variance</p>
-                <p className={`font-bold mt-0.5 ${invoice.po_variance_percent > 5 ? 'text-amber-400' : 'text-emerald-400'}`}>
+              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <p className="text-slate-500 text-[10px] uppercase font-bold">PO Variance</p>
+                <p className={`font-bold mt-0.5 ${invoice.po_variance_percent > 5 ? 'text-amber-700' : 'text-emerald-700'}`}>
                   {invoice.po_variance_percent > 0 ? `+${invoice.po_variance_percent}%` : `${invoice.po_variance_percent || 0}%`}
                 </p>
               </div>
             </div>
 
             {poDetails.summary && (
-              <p className="text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-slate-850">
+              <p className="text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-200 font-medium leading-relaxed">
                 {poDetails.summary}
               </p>
             )}
           </div>
 
           {/* Expense Policy Engine Evaluation */}
-          <div className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Sliders className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+                <Sliders className="w-4 h-4 text-emerald-600" />
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">
                   Expense Policy Compliance Checks
                 </h3>
               </div>
@@ -317,17 +312,17 @@ export const InvoiceDetail: React.FC = () => {
               {(invoice.policy_results || []).map((pol, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/60 border border-slate-850 text-xs"
+                  className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70 text-xs"
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2.5">
                     {pol.status === 'PASS' ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                     ) : (
-                      <AlertTriangle className="w-4 h-4 text-amber-400" />
+                      <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                     )}
                     <div>
-                      <p className="font-semibold text-slate-200">{pol.rule_name}</p>
-                      <p className="text-[11px] text-slate-400">{pol.evidence}</p>
+                      <p className="font-bold text-slate-900">{pol.rule_name}</p>
+                      <p className="text-[11px] text-slate-600 mt-0.5 font-medium">{pol.evidence}</p>
                     </div>
                   </div>
                   <Badge variant="status" value={pol.status} />
@@ -343,15 +338,15 @@ export const InvoiceDetail: React.FC = () => {
           </div>
 
           {/* Agent Execution Timeline */}
-          <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+          <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Layers className="w-4 h-4 text-emerald-400" />
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+                <Layers className="w-4 h-4 text-emerald-600" />
+                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-800">
                   Chronological Multi-Agent Execution Timeline
                 </h3>
               </div>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-slate-500 font-bold bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200">
                 {invoice.audit_events?.length || 0} Audit Events
               </span>
             </div>

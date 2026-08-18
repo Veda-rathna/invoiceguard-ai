@@ -33,7 +33,7 @@ export const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased selection:bg-emerald-100 selection:text-emerald-900">
         <Navbar reviewCount={reviewCount} />
 
         <div className="flex flex-1">

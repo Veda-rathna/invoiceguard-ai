@@ -27,10 +27,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ reviewCount = 0 }) => {
   ];
 
   return (
-    <aside className="w-64 border-r border-slate-800 bg-slate-900/50 flex flex-col justify-between p-4 min-h-[calc(100vh-4rem)]">
+    <aside className="w-64 border-r border-slate-200 bg-white flex flex-col justify-between p-4 min-h-[calc(100vh-4rem)] shadow-[1px_0_3px_rgba(0,0,0,0.02)]">
       <div className="space-y-6">
         <div>
-          <p className="px-3 text-[11px] font-semibold tracking-wider text-slate-500 uppercase font-mono">
+          <p className="px-3 text-[11px] font-bold tracking-wider text-slate-400 uppercase font-mono">
             Navigation
           </p>
           <nav className="mt-2 space-y-1">
@@ -42,8 +42,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ reviewCount = 0 }) => {
                 className={({ isActive }) =>
                   `flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                     isActive
-                      ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm shadow-emerald-500/10'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                      ? 'bg-emerald-50 text-emerald-800 font-semibold border-l-4 border-l-emerald-600 rounded-l-none'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-l-4 border-transparent'
                   }`
                 }
               >
@@ -52,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ reviewCount = 0 }) => {
                   <span>{item.label}</span>
                 </div>
                 {item.badge !== undefined && item.badge > 0 && (
-                  <span className="bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full text-xs font-bold font-mono">
+                  <span className="bg-amber-500 text-white px-2 py-0.5 rounded-full text-xs font-bold font-mono shadow-xs">
                     {item.badge}
                   </span>
                 )}
@@ -62,34 +62,34 @@ export const Sidebar: React.FC<SidebarProps> = ({ reviewCount = 0 }) => {
         </div>
 
         {/* Multi-Agent Architecture Indicator */}
-        <div className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/50 space-y-2">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-slate-300">
-            <Layers className="w-4 h-4 text-emerald-400" />
+        <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2.5 shadow-2xs">
+          <div className="flex items-center space-x-2 text-xs font-bold text-slate-800">
+            <Layers className="w-4 h-4 text-emerald-600" />
             <span>Active LangGraph Agents</span>
           </div>
-          <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-slate-400">
+          <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-slate-600">
             <div className="flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>Doc Intel</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>Validation</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>PO Match</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>Policy</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>Anomaly</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>Risk Engine</span>
             </div>
           </div>
@@ -97,14 +97,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ reviewCount = 0 }) => {
       </div>
 
       {/* Footer Version info */}
-      <div className="p-3 border-t border-slate-800/80 text-xs text-slate-500 font-mono space-y-1">
+      <div className="p-3 border-t border-slate-100 text-xs text-slate-500 font-mono space-y-1">
         <div className="flex justify-between items-center">
           <span>LangGraph Core</span>
-          <span className="text-slate-400">v0.0.30</span>
+          <span className="text-slate-700 font-semibold">v0.0.30</span>
         </div>
         <div className="flex justify-between items-center">
           <span>Bedrock Runtime</span>
-          <span className="text-emerald-400">Active</span>
+          <span className="text-emerald-700 font-bold">Active</span>
         </div>
       </div>
     </aside>
