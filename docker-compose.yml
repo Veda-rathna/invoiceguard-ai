@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: invoiceguard-db
+    environment:
+      POSTGRES_DB: invoiceguard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: invoiceguard-backend
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/invoiceguard
+      - AWS_REGION=us-east-1
+      - BEDROCK_MODEL_ID=qwen.qwen3-vl-235b-a22b
+      - DEMO_MODE=true
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: invoiceguard-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
