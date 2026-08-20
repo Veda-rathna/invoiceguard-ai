@@ -142,8 +142,10 @@ def get_bedrock_status():
     return {
         "model_id": settings.BEDROCK_MODEL_ID,
         "region": settings.AWS_REGION,
+        "provider": "Amazon Bedrock",
         "demo_mode": settings.DEMO_MODE,
         "client_initialized": bedrock_service.client is not None,
+        "auth_mode": bedrock_service.auth_mode,
         "has_explicit_keys": bool(settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY)
     }
 
@@ -153,4 +155,4 @@ def test_bedrock_connection():
     """
     Actively sends a test ping request to Amazon Bedrock Runtime to verify credentials and model accessibility.
     """
-    return bedrock_service.check_connection()
+    return bedrock_service.reconnect()

@@ -1,6 +1,15 @@
 import os
 from typing import List, Optional
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
+
+# Explicitly load .env from root and local directory
+root_env = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.env"))
+local_env = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.env"))
+if os.path.exists(root_env):
+    load_dotenv(root_env, override=True)
+if os.path.exists(local_env):
+    load_dotenv(local_env, override=True)
 
 
 class Settings(BaseSettings):
@@ -20,9 +29,12 @@ class Settings(BaseSettings):
     AWS_ACCESS_KEY_ID: Optional[str] = None
     AWS_SECRET_ACCESS_KEY: Optional[str] = None
     AWS_SESSION_TOKEN: Optional[str] = None
+    BEDROCK_API_KEY: Optional[str] = None
+    LLM_API_KEY: Optional[str] = None
+    AWS_BEDROCK_API_KEY: Optional[str] = None
     
     # Offline Demo Mode
-    DEMO_MODE: bool = True
+    DEMO_MODE: bool = False
     
     # Database
     DATABASE_URL: str = "sqlite:///./invoiceguard.db"
@@ -50,4 +62,17 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Clean credential values of any quotes/whitespace
+if settings.AWS_ACCESS_KEY_ID:
+    settings.AWS_ACCESS_KEY_ID = settings.AWS_ACCESS_KEY_ID.strip().strip('"').strip("'")
+if settings.AWS_SECRET_ACCESS_KEY:
+    settings.AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY.strip().strip('"').strip("'")
+if settings.AWS_SESSION_TOKEN:
+    settings.AWS_SESSION_TOKEN = settings.AWS_SESSION_TOKEN.strip().strip('"').strip("'")
+if settings.BEDROCK_MODEL_ID:
+    settings.BEDROCK_MODEL_ID = settings.BEDROCK_MODEL_ID.strip().strip('"').strip("'")
+if settings.AWS_REGION:
+    settings.AWS_REGION = settings.AWS_REGION.strip().strip('"').strip("'")
+
 os.makedirs(settings.UPLOAD_DIR, exist_ok=True)

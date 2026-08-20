@@ -1,12 +1,25 @@
-import React from 'react';
-import { ShieldCheck, Cpu, Bell, Zap } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ShieldCheck, Cpu, Bell, Zap, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { api } from '../../api/client';
 
 interface NavbarProps {
   reviewCount?: number;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ reviewCount = 0 }) => {
+  const [bedrockLive, setBedrockLive] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    api.getBedrockStatus()
+      .then((status) => {
+        setBedrockLive(Boolean(status?.client_initialized && !status?.demo_mode));
+      })
+      .catch(() => {
+        setBedrockLive(false);
+      });
+  }, []);
+
   return (
     <header className="h-16 border-b border-slate-200 bg-white/95 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-30 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       {/* Brand & Model Status */}
@@ -54,11 +67,30 @@ export const Navbar: React.FC<NavbarProps> = ({ reviewCount = 0 }) => {
           )}
         </Link>
 
-        {/* Demo Mode Pill */}
-        <div className="flex items-center space-x-1.5 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-emerald-700 shadow-2xs">
-          <Zap className="w-3.5 h-3.5 fill-emerald-600 text-emerald-600" />
-          <span className="hidden sm:inline">Offline Demo Fallback Ready</span>
-        </div>
+        {/* Dynamic Bedrock Live Status Pill */}
+        {bedrockLive ? (
+          <Link
+            to="/observability"
+            className="flex items-center space-x-1.5 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-mono font-bold text-emerald-800 shadow-2xs transition-colors"
+            title="Amazon Bedrock Runtime Connected and Active"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="hidden sm:inline">Bedrock Live API Active</span>
+          </Link>
+        ) : (
+          <Link
+            to="/observability"
+            className="flex items-center space-x-1.5 bg-amber-50 hover:bg-amber-100/80 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-mono font-medium text-amber-800 shadow-2xs transition-colors"
+            title="Running in Demo Fallback Mode"
+          >
+            <Zap className="w-3.5 h-3.5 fill-amber-600 text-amber-600" />
+            <span className="hidden sm:inline">Offline Demo Fallback</span>
+          </Link>
+        )}
       </div>
     </header>
   );

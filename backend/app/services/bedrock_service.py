@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import logging
@@ -24,10 +25,14 @@ class BedrockService:
         self.model_id = settings.BEDROCK_MODEL_ID
         self.region = settings.AWS_REGION
         self.client = None
+        self.auth_mode = "None"
         self._init_client()
 
     def _init_client(self):
         try:
+            self.model_id = settings.BEDROCK_MODEL_ID
+            self.region = settings.AWS_REGION
+
             boto_config = Config(
                 region_name=self.region,
                 retries={"max_attempts": 3, "mode": "standard"},
@@ -40,56 +45,88 @@ class BedrockService:
                 "region_name": self.region,
                 "config": boto_config
             }
-            if settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY:
-                kwargs["aws_access_key_id"] = settings.AWS_ACCESS_KEY_ID
-                kwargs["aws_secret_access_key"] = settings.AWS_SECRET_ACCESS_KEY
-                if settings.AWS_SESSION_TOKEN:
-                    kwargs["aws_session_token"] = settings.AWS_SESSION_TOKEN
+
+            # Check explicit AWS credentials
+            access_key = settings.AWS_ACCESS_KEY_ID or os.getenv("AWS_ACCESS_KEY_ID")
+            secret_key = settings.AWS_SECRET_ACCESS_KEY or os.getenv("AWS_SECRET_ACCESS_KEY")
+            session_token = settings.AWS_SESSION_TOKEN or os.getenv("AWS_SESSION_TOKEN")
+
+            if access_key and secret_key:
+                kwargs["aws_access_key_id"] = access_key.strip().strip('"').strip("'")
+                kwargs["aws_secret_access_key"] = secret_key.strip().strip('"').strip("'")
+                if session_token:
+                    kwargs["aws_session_token"] = session_token.strip().strip('"').strip("'")
+                self.auth_mode = "AWS IAM Access Keys"
+            else:
+                self.auth_mode = "Default AWS Credential Chain / Environment"
 
             self.client = boto3.client(**kwargs)
-            logger.info(f"Bedrock Runtime client successfully initialized for model {self.model_id} in {self.region}")
+            logger.info(f"Bedrock Runtime client initialized ({self.auth_mode}) for model {self.model_id} in {self.region}")
         except Exception as e:
             logger.warning(f"Could not initialize Bedrock client: {e}. Will rely on fallback/DEMO_MODE.")
             self.client = None
+            self.auth_mode = f"Error: {e}"
+
+    def reconnect(self) -> Dict[str, Any]:
+        """
+        Reinitializes the Bedrock boto3 client and executes an active connectivity test.
+        """
+        self._init_client()
+        return self.check_connection()
 
     def check_connection(self) -> Dict[str, Any]:
         """
         Tests live connectivity to Amazon Bedrock Runtime.
         """
         if not self.client:
+            self._init_client()
+
+        if not self.client:
             return {
                 "connected": False,
+                "status": "error",
+                "provider": "Amazon Bedrock",
                 "model_id": self.model_id,
                 "region": self.region,
-                "error": "Bedrock client not initialized (missing AWS credentials or invalid region)"
+                "auth_mode": self.auth_mode,
+                "error": "Bedrock client not initialized. Please verify AWS credentials in .env"
             }
 
         try:
             # Send a fast test prompt
             output, latency_ms, tokens, error = self.invoke_text(
-                system_prompt="You are a ping test assistant.",
-                user_prompt="Respond with 'OK'",
-                max_tokens=10
+                system_prompt="You are an automated connectivity verification assistant for Amazon Bedrock.",
+                user_prompt="Ping check. Respond with 'CONNECTED_OK'",
+                max_tokens=15
             )
             if error:
                 return {
                     "connected": False,
+                    "status": "error",
+                    "provider": "Amazon Bedrock",
                     "model_id": self.model_id,
                     "region": self.region,
+                    "auth_mode": self.auth_mode,
                     "error": error
                 }
             return {
                 "connected": True,
+                "status": "active",
+                "provider": "Amazon Bedrock",
                 "model_id": self.model_id,
                 "region": self.region,
-                "latency_ms": latency_ms,
+                "auth_mode": self.auth_mode,
+                "latency_ms": round(latency_ms, 1),
                 "response": output.strip()
             }
         except Exception as e:
             return {
                 "connected": False,
+                "status": "error",
+                "provider": "Amazon Bedrock",
                 "model_id": self.model_id,
                 "region": self.region,
+                "auth_mode": self.auth_mode,
                 "error": str(e)
             }
 
