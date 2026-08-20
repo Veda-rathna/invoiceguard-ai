@@ -8,7 +8,7 @@
 2. [Core Architecture & System Blueprint](#2-core-architecture--system-blueprint)
 3. [The 8-Agent LangGraph Multi-Agent Pipeline](#3-the-8-agent-langgraph-multi-agent-pipeline)
    - [Agent 1: Document Agent (Visual Multimodal Extraction)](#agent-1-document-agent-visual-multimodal-extraction)
-   - [Agent 2: Validation Agent (Deterministic Math Checks)](#agent-2-validation-agent-deterministic-math-checks)
+   - [Agent 2: Validation Agent (Deterministic Math check)](#agent-2-validation-agent-deterministic-math-checks)
    - [Agent 3: PO Matching Agent (3-Way ERP Reconciliation)](#agent-3-po-matching-agent-3-way-erp-reconciliation)
    - [Agent 4: Policy Agent (Dynamic Expense Governance)](#agent-4-policy-agent-dynamic-expense-governance)
    - [Agent 5: Anomaly Agent (Duplicate & Spend Spike Detection)](#agent-5-anomaly-agent-duplicate--spend-spike-detection)
