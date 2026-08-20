@@ -53,6 +53,8 @@ AUTO_APPROVE             HUMAN_REVIEW                      BLOCK
 
 ---
 
+
+
 ## 🚀 Key Innovations
 
 1. **Multimodal Visual Intelligence:** Leverages `qwen.qwen3-vl-235b-a22b` via Amazon Bedrock to directly understand invoices/receipts visually without brittle OCR pipelines.
